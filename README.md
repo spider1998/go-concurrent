@@ -16,3 +16,7 @@ Go语言并发编程
 --or-done-channel: or-done-chanel模式(处理分散channel,回到简单循环)
 
 --tee-channel:分割channel，实现tee-channel模式
+
+--brigdge-channel:channel桥接模式
+
+--buffer_test:队列排队优化分析
