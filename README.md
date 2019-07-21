@@ -12,3 +12,7 @@ Go语言并发编程
 --pipeline: channel pipeline模式
 
 --fan_in_out: 扇入扇出模式设计
+
+--or-done-channel: or-done-chanel模式(处理分散channel,回到简单循环)
+
+--tee-channel:分割channel，实现tee-channel模式
