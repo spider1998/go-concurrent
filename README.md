@@ -34,10 +34,10 @@ Go语言并发编程
 
 ## *190727*
 
---context1  deadline 截止上下文
+--context1.go  deadline 截止上下文
   
---context2  存储和检索请求范围数据的Context的数据包
+--context2.go  存储和检索请求范围数据的Context的数据包
 
---context3.go context2改进（类型约束）
+--context3.go context2.go改进（类型约束）
 
 --err.go  大规模并发异常处理 
