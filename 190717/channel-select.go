@@ -1,15 +1,15 @@
 package main
 
 import (
-	`fmt`
-	`time`
+	"fmt"
+	"time"
 )
 
 func main() {
 	var list chan int
-	list = make(chan int,100)
+	list = make(chan int, 100)
 	go func() {
-		for i := range list{
+		for i := range list {
 			fmt.Print(i)
 		}
 	}()
@@ -28,9 +28,8 @@ func main() {
 		fmt.Println("waite.....")
 	}()
 
-	for{
+	for {
 		list <- 1
-		time.Sleep(time.Second*5)
+		time.Sleep(time.Second * 5)
 	}
 }
-

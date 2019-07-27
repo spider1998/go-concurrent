@@ -4,18 +4,18 @@ package main
 
 import "fmt"
 
-func main()  {
+func main() {
 
-	ordone := func(done,c <-chan interface{}) <-chan interface {}{
+	ordone := func(done, c <-chan interface{}) <-chan interface{} {
 		valStream := make(chan interface{})
 		go func() {
 			defer close(valStream)
-			for{
+			for {
 				select {
 				case <-done:
 					return
-				case v,ok := <-c:
-					if !ok{
+				case v, ok := <-c:
+					if !ok {
 						return
 					}
 					select {
@@ -28,22 +28,22 @@ func main()  {
 		return valStream
 	}
 
-	bridge := func(done <-chan interface{},chanStream <-chan <-chan interface{}) <-chan interface{}{
+	bridge := func(done <-chan interface{}, chanStream <-chan <-chan interface{}) <-chan interface{} {
 		valStream := make(chan interface{})
 		go func() {
 			defer close(valStream)
-			for{
-				var stream <- chan interface{}
+			for {
+				var stream <-chan interface{}
 				select {
 				case <-done:
 					return
-				case maybeStream,ok := <- chanStream:
-					if !ok{
+				case maybeStream, ok := <-chanStream:
+					if !ok {
 						return
 					}
 					stream = maybeStream
 				}
-				for val := range ordone(done,stream){
+				for val := range ordone(done, stream) {
 					select {
 					case valStream <- val:
 					case <-done:
@@ -54,12 +54,12 @@ func main()  {
 		return valStream
 	}
 
-	genVals := func() <-chan <-chan interface{}{
+	genVals := func() <-chan <-chan interface{} {
 		chanStream := make(chan (<-chan interface{}))
 		go func() {
 			defer close(chanStream)
-			for i:=0;i<10;i++{
-				stream := make(chan interface{},1)
+			for i := 0; i < 10; i++ {
+				stream := make(chan interface{}, 1)
 				stream <- i
 				close(stream)
 				chanStream <- stream
@@ -68,8 +68,8 @@ func main()  {
 		return chanStream
 	}
 
-	for v := range bridge(nil,genVals()){
-		fmt.Printf("%v ",v)
+	for v := range bridge(nil, genVals()) {
+		fmt.Printf("%v ", v)
 	}
 
 }

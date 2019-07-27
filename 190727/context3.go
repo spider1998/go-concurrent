@@ -6,8 +6,8 @@ import (
 	"fmt"
 )
 
-func main()  {
-	ProcessReq("jane","abc123")
+func main() {
+	ProcessReq("jane", "abc123")
 }
 
 type ctxKey int
@@ -25,16 +25,16 @@ func AuthToken(c context.Context) string {
 	return c.Value(ctxToken).(string)
 }
 
-func ProcessReq(userID,authToken string)  {
-	ctx := context.WithValue(context.Background(),ctxUserID,userID)
-	ctx = context.WithValue(ctx,ctxToken,authToken)
+func ProcessReq(userID, authToken string) {
+	ctx := context.WithValue(context.Background(), ctxUserID, userID)
+	ctx = context.WithValue(ctx, ctxToken, authToken)
 	Handle(ctx)
 }
 
-func Handle(ctx context.Context)  {
+func Handle(ctx context.Context) {
 	fmt.Printf(
 		"handle response for %v (ahth: %v)",
 		UserID(ctx),
 		AuthToken(ctx),
-		)
+	)
 }

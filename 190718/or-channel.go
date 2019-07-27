@@ -3,12 +3,12 @@ channel 中，该 channel 在任何组件 channel 关闭时关闭*/
 package main
 
 import (
-	`fmt`
-	`time`
+	"fmt"
+	"time"
 )
 
-func main()  {
-	var or func(channels ...<-chan interface{})<-chan interface{}
+func main() {
+	var or func(channels ...<-chan interface{}) <-chan interface{}
 	or = func(channels ...<-chan interface{}) <-chan interface{} {
 		switch len(channels) {
 		case 0:
@@ -37,8 +37,7 @@ func main()  {
 		return orDone
 	}
 
-
-	sig := func(after time.Duration) <-chan interface{}{
+	sig := func(after time.Duration) <-chan interface{} {
 		c := make(chan interface{})
 		go func() {
 			defer close(c)
@@ -55,11 +54,10 @@ func main()  {
 		sig(1*time.Hour),
 		sig(1*time.Minute),
 	)
-	fmt.Printf("done after %v",time.Since(start))
+	fmt.Printf("done after %v", time.Since(start))
 
 }
 
 /*这种模式在系统中的模块交汇处非常有用。在这些交汇处，调用堆
 中应该有复数种的用来取消 goroutine 的决策树 使用 or 函数，可以简
 地将它们组合在 起并将其传递给堆枝。*/
-

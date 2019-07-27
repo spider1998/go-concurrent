@@ -13,35 +13,34 @@ import (
 	"testing"
 )
 
-
 //时间：2041ns （无缓冲）
-func BenchmarkUnBufferedWrite(b *testing.B)  {
-	performWrite(b,tmpFileOrFatal())
+func BenchmarkUnBufferedWrite(b *testing.B) {
+	performWrite(b, tmpFileOrFatal())
 }
 
 //时间：597ns (有缓冲)
-func BenchmarkBufferedWrite(b *testing.B)  {
+func BenchmarkBufferedWrite(b *testing.B) {
 	bufferredFile := bufio.NewWriter(tmpFileOrFatal())
-	performWrite(b,bufio.NewWriter(bufferredFile))
+	performWrite(b, bufio.NewWriter(bufferredFile))
 }
 
 func tmpFileOrFatal() *os.File {
-	file,err := ioutil.TempFile("","tmp")
-	if err != nil{
-		log.Fatalf("error: %v",err)
+	file, err := ioutil.TempFile("", "tmp")
+	if err != nil {
+		log.Fatalf("error: %v", err)
 	}
 	return file
 }
 
-func performWrite(b *testing.B,write io.Writer)  {
+func performWrite(b *testing.B, write io.Writer) {
 
-	repeat := func(done <- chan interface{},values ...interface{})<-chan interface {}{
+	repeat := func(done <-chan interface{}, values ...interface{}) <-chan interface{} {
 		valsStream := make(chan interface{})
 		go func() {
 			for {
-				for _,v := range values{
+				for _, v := range values {
 					select {
-					case <- done:
+					case <-done:
 						return
 					case valsStream <- v:
 
@@ -52,15 +51,15 @@ func performWrite(b *testing.B,write io.Writer)  {
 		return valsStream
 	}
 
-	take := func(done <- chan interface{}, valueStream <-chan interface{},num int) <-chan interface{}{
+	take := func(done <-chan interface{}, valueStream <-chan interface{}, num int) <-chan interface{} {
 		takeStream := make(chan interface{})
 		go func() {
 			defer close(takeStream)
-			for i:=0;i<num;i++{
+			for i := 0; i < num; i++ {
 				select {
 				case <-done:
 					return
-				case takeStream <- <- valueStream:
+				case takeStream <- <-valueStream:
 				}
 			}
 		}()
@@ -71,7 +70,7 @@ func performWrite(b *testing.B,write io.Writer)  {
 	defer close(done)
 
 	b.ResetTimer()
-	for bt := range take(done,repeat(done,byte(0)),b.N){
+	for bt := range take(done, repeat(done, byte(0)), b.N) {
 		write.Write([]byte{bt.(byte)})
 	}
 }
