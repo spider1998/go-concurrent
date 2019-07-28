@@ -1,5 +1,7 @@
 Go语言并发编程
 
+参考文档【Go语言并发之道】
+
 ![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1563458083139&di=c9b39834bfb73c4b919506c04aa3cb13&imgtype=0&src=http%3A%2F%2Fimg2.mukewang.com%2F5ad9c04900010ee306000338.jpg)
 
 ## *190717*
